@@ -20,9 +20,28 @@ The dataset includes:
 ## Solution
 
 The solution uses machine learning to predict loan outcomes:
-1. Data preprocessing and feature engineering
-2. Training a classification model (XGBoost)
-3. Generating predictions for test data
+1. **Data preprocessing and feature engineering**:
+   - Merge demographics, performance, and previous loan history
+   - Calculate age from birthdate
+   - Aggregate previous loan metrics (count, amounts, payment behavior)
+   - Create derived features (loan per day, interest rate, payment patterns)
+2. **Training a classification model**:
+   - XGBoost classifier with parameters tuned for imbalanced data
+   - Scale_pos_weight to handle class imbalance (more Good loans than Bad)
+   - 200 estimators with depth 6 for complex pattern recognition
+3. **Generating predictions for test data**:
+   - Apply same feature engineering to test set
+   - Predict binary outcome (1=Good, 0=Bad)
+
+## Model Performance
+
+- Validation accuracy: ~78%
+- Error rate: ~22%
+
+The model considers multiple factors:
+- Customer demographics (age, location, bank)
+- Current loan characteristics (amount, term, interest)
+- Previous loan history (payment behavior, number of loans, amounts)
 
 ## Usage
 
@@ -42,6 +61,17 @@ customerID            Good_Bad_flag
 12345667                    1
 43423156                    0
 ```
+
+### Validate Submission
+```bash
+python validate_submission.py
+```
+
+This validates that the submission file:
+- Has the correct format (customerid, Good_Bad_flag columns)
+- Contains all required customer IDs
+- Has valid predictions (0 or 1)
+- Has no missing values
 
 ## Evaluation
 
