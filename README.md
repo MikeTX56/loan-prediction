@@ -43,6 +43,13 @@ The model considers multiple factors:
 - Current loan characteristics (amount, term, interest)
 - Previous loan history (payment behavior, number of loans, amounts)
 
+## Files
+
+- **predict_loan_default.ipynb**: Main Jupyter notebook for training model and generating predictions
+- **validate_submission.ipynb**: Jupyter notebook for validating submission format
+- **requirements.txt**: Python package dependencies
+- **submission.csv**: Generated predictions file (created after running prediction notebook)
+
 ## Usage
 
 ### Install Dependencies
@@ -51,8 +58,14 @@ pip install -r requirements.txt
 ```
 
 ### Run Prediction
+Open and run the Jupyter notebook:
 ```bash
-python predict_loan_default.py
+jupyter notebook predict_loan_default.ipynb
+```
+
+Or run all cells programmatically:
+```bash
+jupyter nbconvert --to notebook --execute predict_loan_default.ipynb
 ```
 
 This will generate a `submission.csv` file with predictions in the required format:
@@ -63,8 +76,9 @@ customerID            Good_Bad_flag
 ```
 
 ### Validate Submission
+Open and run the validation notebook:
 ```bash
-python validate_submission.py
+jupyter notebook validate_submission.ipynb
 ```
 
 This validates that the submission file:
