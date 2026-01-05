@@ -4,6 +4,11 @@ Validation script to verify submission format
 
 import pandas as pd
 import sys
+import os
+
+# Data directory - same as prediction script
+DATA_DIR = 'data-science-nigeria-challenge-1-loan-default-prediction20250307-26022-im3qg9'
+
 
 def validate_submission(submission_file='submission.csv'):
     """Validate the submission file format"""
@@ -31,7 +36,8 @@ def validate_submission(submission_file='submission.csv'):
             return False
         
         # Load test data to verify customer IDs match
-        test_perf = pd.read_csv('data-science-nigeria-challenge-1-loan-default-prediction20250307-26022-im3qg9/testperf.csv')
+        test_perf_path = os.path.join(DATA_DIR, 'testperf.csv')
+        test_perf = pd.read_csv(test_perf_path)
         
         if len(submission) != len(test_perf):
             print(f"❌ ERROR: Submission has {len(submission)} rows, expected {len(test_perf)}")

@@ -38,7 +38,7 @@ def load_and_prepare_data(data_type='train'):
 
 def aggregate_previous_loans(prev_loans):
     """Aggregate previous loan history features"""
-    # Convert date columns to datetime
+    # Convert date columns to datetime - vectorized operation
     date_cols = ['approveddate', 'creationdate', 'closeddate', 'firstduedate', 'firstrepaiddate']
     for col in date_cols:
         if col in prev_loans.columns:
@@ -152,6 +152,14 @@ def train_model(X_train, y_train):
     """Train XGBoost classifier"""
     print("Training model...")
     
+    # Calculate scale_pos_weight dynamically from training data
+    neg_count = sum(y_train == 0)
+    pos_count = sum(y_train == 1)
+    scale_pos_weight = neg_count / pos_count if pos_count > 0 else 1.0
+    
+    print(f"Class distribution - Negative: {neg_count}, Positive: {pos_count}")
+    print(f"Using scale_pos_weight: {scale_pos_weight:.2f}")
+    
     # Initialize model with parameters to handle imbalanced data
     model = XGBClassifier(
         n_estimators=200,
@@ -161,7 +169,7 @@ def train_model(X_train, y_train):
         colsample_bytree=0.8,
         random_state=42,
         eval_metric='logloss',
-        scale_pos_weight=3.6  # Ratio of negative to positive class
+        scale_pos_weight=scale_pos_weight
     )
     
     # Train model
